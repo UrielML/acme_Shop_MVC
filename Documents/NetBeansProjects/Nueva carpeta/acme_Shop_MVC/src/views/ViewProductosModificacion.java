@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package views;
+import Atxy2k.CustomTextField.RestrictedTextField;
 
 /**
  *
@@ -16,6 +17,13 @@ public class ViewProductosModificacion extends javax.swing.JPanel {
      */
     public ViewProductosModificacion() {
         initComponents();
+ 
+        
+           RestrictedTextField pro=new RestrictedTextField(jtexistencias); //,jtexistencias,jtprecioventa);
+        pro.setOnlyNums(true);
+     
+                 
+        
     }
 
     /**
@@ -103,6 +111,16 @@ public class ViewProductosModificacion extends javax.swing.JPanel {
         jtproducto.setBackground(new java.awt.Color(204, 204, 255));
         jtproducto.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jtproducto.setForeground(new java.awt.Color(0, 0, 153));
+        jtproducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtproductoActionPerformed(evt);
+            }
+        });
+        jtproducto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtproductoKeyTyped(evt);
+            }
+        });
 
         jtdescricion.setBackground(new java.awt.Color(204, 204, 255));
         jtdescricion.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -435,6 +453,27 @@ public class ViewProductosModificacion extends javax.swing.JPanel {
     private void jbagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbagregarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jbagregarActionPerformed
+
+    private void jtproductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtproductoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtproductoActionPerformed
+
+    private void jtproductoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtproductoKeyTyped
+ char c=evt.getKeyChar(); 
+             
+         
+          if(Character.isDigit(c)) { 
+              getToolkit().beep(); 
+               
+              evt.consume(); 
+               
+            //  Error.("Ingresa Solo Letras"); 
+               
+          } 
+
+
+
+    }//GEN-LAST:event_jtproductoKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

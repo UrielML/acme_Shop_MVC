@@ -5,6 +5,8 @@
  */
 package views;
 
+import Atxy2k.CustomTextField.RestrictedTextField;
+
 /**
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
@@ -16,6 +18,8 @@ public class ViewUsuarios extends javax.swing.JPanel {
      */
     public ViewUsuarios() {
         initComponents();
+        
+          
     }
 
     /**
@@ -97,6 +101,11 @@ public class ViewUsuarios extends javax.swing.JPanel {
         jtnombre.setBackground(new java.awt.Color(204, 204, 255));
         jtnombre.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jtnombre.setForeground(new java.awt.Color(0, 0, 153));
+        jtnombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtnombreKeyTyped(evt);
+            }
+        });
 
         jtusuario.setBackground(new java.awt.Color(204, 204, 255));
         jtusuario.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -433,6 +442,19 @@ public class ViewUsuarios extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jbagregarActionPerformed
 
+    private void jtnombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtnombreKeyTyped
+ char c=evt.getKeyChar(); 
+             
+         
+          if(Character.isDigit(c)) { 
+              getToolkit().beep(); 
+               
+              evt.consume(); 
+               
+            //  Error.("Ingresa Solo Letras"); 
+              // window.setSize(new Dimension(300, 200));
+    }//GEN-LAST:event_jtnombreKeyTyped
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton jBsaveeditar;

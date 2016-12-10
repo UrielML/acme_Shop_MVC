@@ -81,7 +81,7 @@ public class Main {
         
          viewProductosModificacion=new  ViewProductosModificacion();
       modelProductosModificacion=new ModelProductosModificacion();
-    controllerProductosModificacion=new ControllerProductosModificacion(viewProductosModificacion,modelProductosModificacion);////////////////////////////
+    controllerProductosModificacion=new ControllerProductosModificacion(viewProductosModificacion,modelProductosModificacion,modelIniciarSeccion);////////////////////////////
     
   
          viewCliente=new  ViewCliente();

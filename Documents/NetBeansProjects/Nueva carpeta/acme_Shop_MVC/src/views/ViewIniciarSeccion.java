@@ -16,6 +16,7 @@ public class ViewIniciarSeccion extends javax.swing.JPanel {
      */
     public ViewIniciarSeccion() {
         initComponents();
+        
     }
 
     /**

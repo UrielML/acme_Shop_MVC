@@ -111,10 +111,7 @@ public class ModelProductosModificacion {
     
       public void initValues() {
                   String sql = "SELECT * FROM productos";
-
-    //    String sql = "SELECT id_producto, producto, descripcion, precio_compra, precio_venta, existencias FROM productos";
-       //  connection.executeQuery("SELECT id_producto,  producto,  descripcion,  precio_compra,  precio_venta,  existencias FROM productos;");
-       //   String sql = "SELECT id_producto, producto, descripcion, precio_compra, precio_venta, existencias FROM productos";
+        
          connection.executeQuery(sql);
         connection.moveNext();
         setValues();

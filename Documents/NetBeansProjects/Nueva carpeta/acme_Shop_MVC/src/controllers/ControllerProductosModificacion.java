@@ -12,6 +12,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import views.ViewProductosModificacion;
 import models.ModelProductosModificacion;
+import models.ModelIniciarSeccion;
 
 /**
  * 
@@ -20,11 +21,12 @@ import models.ModelProductosModificacion;
 public class ControllerProductosModificacion  implements ActionListener{
    private final ViewProductosModificacion viewProductosModificacion;
     private final ModelProductosModificacion modelProductosModificacion;
-  
+  private final ModelIniciarSeccion modelIniciarSeccion;
    
-    public ControllerProductosModificacion(ViewProductosModificacion viewProductosModificacion, ModelProductosModificacion modelProductosModificacion) {
+    public ControllerProductosModificacion(ViewProductosModificacion viewProductosModificacion, ModelProductosModificacion modelProductosModificacion,ModelIniciarSeccion modelIniciarSeccion) {
         this.viewProductosModificacion = viewProductosModificacion;
         this.modelProductosModificacion = modelProductosModificacion;
+        this.modelIniciarSeccion=modelIniciarSeccion;
     
         
             this.viewProductosModificacion.jbprimero.addActionListener(this);  
@@ -58,17 +60,35 @@ public class ControllerProductosModificacion  implements ActionListener{
         else if (g.getSource() == viewProductosModificacion.jbagregar){
             aggregar();
         }else if (g.getSource() == viewProductosModificacion.jBsaveeditar){
+                if (viewProductosModificacion.jtproducto.getText().isEmpty() || viewProductosModificacion.jtdescricion.getText().isEmpty() || viewProductosModificacion.jtpreciocompra.getText().isEmpty()||viewProductosModificacion.jtprecioventa.getText().isEmpty()||viewProductosModificacion.jtprecioventa.getText().isEmpty()){
+                JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+                  }
+            else {
             guardar();
             showRecords();
-        }else if (g.getSource() == viewProductosModificacion.jbborrar){
-            deleteRecordButton();
+                }
+        }else if (g.getSource() ==viewProductosModificacion.jbborrar){
+
+                  String test1= JOptionPane.showInputDialog("por favor ingresa tu contrasena ");
+                        if(modelIniciarSeccion.getPassword() == test1){
+                           deleteRecordButton();
+                       }else{
+                                        JOptionPane.showMessageDialog(null, "no esta permitido");
+                        }
         }  else if (g.getSource() == viewProductosModificacion.jBsaveeditar1){
+              if (viewProductosModificacion.jtproducto.getText().isEmpty() || viewProductosModificacion.jtdescricion.getText().isEmpty() || viewProductosModificacion.jtpreciocompra.getText().isEmpty()||viewProductosModificacion.jtprecioventa.getText().isEmpty()||viewProductosModificacion.jtprecioventa.getText().isEmpty()){
+                JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+                  }
+            else {
           guardarcambios();//alterRecordButton();
                    showRecords();
+              }
         } else if (g.getSource() == viewProductosModificacion.jbeditar){
           alterRecordButton();
         } else if (g.getSource() == viewProductosModificacion.jBuscar){
-          buscar();
+ buscar();
+                             //      viewProductosModificacion.jTbuscar.setText(modelIniciarSeccion.getUsername());
+
     }
      }
     
@@ -76,6 +96,7 @@ public class ControllerProductosModificacion  implements ActionListener{
         modelProductosModificacion.moveFirst();
         modelProductosModificacion.setValues();
         showValues();
+
     }
     
     private void previousButton() {
@@ -97,7 +118,7 @@ public class ControllerProductosModificacion  implements ActionListener{
     }
       
     private void aggregar() {       
-          viewProductosModificacion.jTidproducto.setText("");
+                viewProductosModificacion.jTidproducto.setText("");
         viewProductosModificacion.jtproducto.setText("");
         viewProductosModificacion.jtdescricion.setText("");
         viewProductosModificacion.jtpreciocompra.setText("");
@@ -113,24 +134,24 @@ public class ControllerProductosModificacion  implements ActionListener{
           Double preciocompra =Double.parseDouble(viewProductosModificacion.jtpreciocompra.getText()); 
            Double precioventa =Double.parseDouble(viewProductosModificacion.jtprecioventa.getText()); 
             int existencias =Integer.parseInt( viewProductosModificacion.jtexistencias.getText());
-           if (viewProductosModificacion.jtproducto.getText().isEmpty() || viewProductosModificacion.jtdescricion.getText().isEmpty() || viewProductosModificacion.jtpreciocompra.getText().isEmpty()||viewProductosModificacion.jtprecioventa.getText().isEmpty()||viewProductosModificacion.jtprecioventa.getText().isEmpty()){
-                  }
-            else {
+       
+               
              modelProductosModificacion.guardarregistro(productos,Descripcion,preciocompra,precioventa, existencias) ;
   
                modelProductosModificacion.setValues();
                 showValues();
                 firstButton();
            
-           }
+           
         }
     }
     
        private void deleteRecordButton(){
-        this.modelProductosModificacion.deleteRecord(Integer.parseInt(viewProductosModificacion.jTidproducto.getText()));
+           
+                       this.modelProductosModificacion.deleteRecord(Integer.parseInt(viewProductosModificacion.jTidproducto.getText()));
            modelProductosModificacion.setValues();
            showValues();
-        
+                    
     }
         private void alterRecordButton() {
         int dialog = JOptionPane.showConfirmDialog(null, "¿Desea modificar este registro?");
@@ -165,13 +186,14 @@ public class ControllerProductosModificacion  implements ActionListener{
       //    this.modelarea.setLargo(Double.parseDouble(viewarea.jTlargo.getText()));
           viewProductosModificacion.jtprecioventa.setText(""+modelProductosModificacion.getPrecioventa());
         viewProductosModificacion.jtexistencias.setText(""+modelProductosModificacion.getExistencias());  
+
     }
     
     private void initView() {
-        viewProductosModificacion.setVisible(true);
+        viewProductosModificacion.setVisible(true); 
         modelProductosModificacion.initValues();
         modelProductosModificacion.setValues();
-       
+
     }
 
      private void showRecords() {

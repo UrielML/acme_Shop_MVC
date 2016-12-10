@@ -9,7 +9,10 @@ package models;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import sax.DBConnection;
+import views.ViewOperacionesVentas;
 
 /**
  * 
@@ -17,24 +20,38 @@ import sax.DBConnection;
  */
 public class ModelOperacionesVentas {
                 public DBConnection connection = new DBConnection(3306,"localhost", "acme_shop", "root", "7890");
+                
+    public String nombrevendedor;
+        public String idvendedor;
+    public String fecha;
+    
+     public int idcliente;
+    public String cliente;
+    public String rfc;
+    public String estado;
+     public long telefono;
+    
+    public int idproducto ;
+    public String producto ;
+    public double precio;
+    public int cantidad;
+    public double total;
+        public double stock;
 
-    private String nombrevendedor;
-        private int idvendedor;
-    private int fecha;
     
-     private int idcliente;
-    private String cliente;
-    private String rfc;
-    private String estado;
-     private long telefono;
+    private double subtotal;
+    private double iva;
+    private double totalfinal;
+
+ViewOperacionesVentas viewOperacionesVentas;
+
     
-    private int idproducto;
-    private String producto ;
-    private double precio;
-    private double cantidad;
+
+
     
+                  public  DefaultTableModel tableModel= new DefaultTableModel(new String [] {"idproducto","producto","precio","cantidad","Total"}, 0);
+
      public Date date = new Date();
-   // public DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
 
     /**
      * @return the nombrevendedor
@@ -53,28 +70,28 @@ public class ModelOperacionesVentas {
     /**
      * @return the idvendedor
      */
-    public int getIdvendedor() {
+    public String getIdvendedor() {
         return idvendedor;
     }
 
     /**
      * @param idvendedor the idvendedor to set
      */
-    public void setIdvendedor(int idvendedor) {
+    public void setIdvendedor(String idvendedor) {
         this.idvendedor = idvendedor;
     }
 
     /**
      * @return the fecha
      */
-    public int getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
     /**
      * @param fecha the fecha to set
      */
-    public void setFecha(int fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
@@ -179,14 +196,14 @@ public class ModelOperacionesVentas {
     /**
      * @return the cantidad
      */
-    public double getCantidad() {
+    public int getCantidad() {
         return cantidad;
     }
 
     /**
      * @param cantidad the cantidad to set
      */
-    public void setCantidad(double cantidad) {
+    public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
     
@@ -203,6 +220,76 @@ public class ModelOperacionesVentas {
     public void setTelefono(int telefono) {
         this.telefono = telefono;
     }
+       /**
+     * @return the total
+     */
+    public double getTotal() {
+        return total;
+    }
+
+    /**
+     * @param total the total to set
+     */
+    public void setTotal(double total) {
+        this.total = total;
+    }
+    
+     /**
+     * @return the subtotal
+     */
+    public double getSubtotal() {
+        return subtotal;
+    }
+
+    /**
+     * @param subtotal the subtotal to set
+     */
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    /**
+     * @return the iva
+     */
+    public double getIva() {
+        return iva;
+    }
+
+    /**
+     * @param iva the iva to set
+     */
+    public void setIva(double iva) {
+        this.iva = iva;
+    }
+
+    /**
+     * @return the totalfinal
+     */
+    public double getTotalfinal() {
+        return totalfinal;
+    }
+
+    /**
+     * @param totalfinal the totalfinal to set
+     */
+    public void setTotalfinal(double totalfinal) {
+        this.totalfinal = totalfinal;
+    }
+    
+        /**
+     * @return the stock
+     */
+    public double getStock() {
+        return stock;
+    }
+
+    /**
+     * @param stock the stock to set
+     */
+    public void setStock(double stock) {
+        this.stock = stock;
+    }
+
     
      public void initValues() {
                   String sql = "SELECT * FROM clientes";
@@ -221,23 +308,19 @@ public class ModelOperacionesVentas {
     }
       public static String FechaActual() {
         Date ahora = new Date();
-        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yy");
         return formateador.format(ahora);
     }
       
       public void buscar(int idcliente) {
-        String query =   "Select * from clientes  WHERE id_cliente = "+idcliente; 
+          
+                String query =   "Select * from clientes  WHERE id_cliente = "+idcliente; 
+
         connection.executeQuery(query);
                 connection.moveNext();
          setValues();
     } 
-      //*++++++++++++++++++++++++++++++++++++++++++++++++++++++++***********+
 
-  /*  public static String HoraActual() {
-        Date ahora = new Date();
-        SimpleDateFormat formateador = new SimpleDateFormat("hh:mm:ss");
-        return formateador.format(ahora);
-    }*/
 public void initValues1() {
                   String sql = "SELECT * FROM productos";
          connection.executeQuery(sql);
@@ -248,6 +331,8 @@ public void initValues1() {
        this. idproducto = connection.getInteger("id_producto");
       this.producto= connection.getString("producto");
        this.precio=connection.getDouble("precio_venta");
+              this.stock=connection.getDouble("existencias");
+
       
     }
      public void busqueda(int idproducto) {
@@ -255,13 +340,74 @@ public void initValues1() {
         connection.executeQuery(query);
                 connection.moveNext();
           setValues1();
-     //   populateTable();
+  
     }   
     
  public double  subtotal(){
-    
     double sub=precio*cantidad;
                     return sub;
 }
+public void populateTable() {
+            setValues1();
+            tableModel.addRow(new Object []{idproducto,producto,precio,cantidad,subtotal()  }   );
+             
+}
+ 
+
+public String GenerarNumeroFactura()
+     {
+        String codigo = "F-";
+        for(int i=1; i<=3;i++){
+         //  int num = i*(3);
+                    int num = (int)((Math.random()*(5))+6);
+
+           codigo = codigo  +  num;
+        }
+        idvendedor= codigo;
+        return codigo;
+    }
+
+      public void descontarstock(String stock,String can)
+    {
+       int des = Integer.parseInt(can);
+       String cap="";
+       int desfinal;
+       String query="SELECT * FROM producto WHERE  existencias='"+stock+"'";
+        try {
+            connection.executeQuery(query);
+            while(connection.moveNext())
+            {
+               cap=connection.getString("4");
+            }
+            
+            
+        } catch (Exception e) {
+        }
+        desfinal=Integer.parseInt(cap)-des;
+        String modi="UPDATE producto SET Stock='"+desfinal+"' WHERE existencias = '"+stock+"'";
+        try {
+        } catch (Exception e) {
+        }
+        
+}
+          public void begin(){
+connection.executeUpdate("start transaction");
+}
+public void roll(){
+connection.executeUpdate("rollback");
+}
+public void commit(){
+connection.executeUpdate("commit");
+}
+
+    public void act(){
+   int filas=tableModel.getRowCount();
+                          for( int i=0; i<filas; i++) {
+                              tableModel.removeRow(0);
+                              
+                          }
+}
+ 
+
 
 }

@@ -6,6 +6,7 @@
 
 package models;
 
+import javax.swing.JOptionPane;
 import sax.DBConnection;
 
 /**
@@ -14,7 +15,7 @@ import sax.DBConnection;
  */
 public class ModelIniciarSeccion {
      public DBConnection connection = new DBConnection(3306,"localhost", "acme_shop", "root", "7890");
-
+    public int idUsername;
         public String username;
     public String password;
     public String status;
@@ -77,6 +78,21 @@ public class ModelIniciarSeccion {
         this.level = level;
     }
     
+      /**
+     * @return the idUsername
+     */
+    public int getIdUsername() {
+        return idUsername;
+    }
+
+    /**
+     * @param idUsername the idUsername to set
+     */
+    public void setIdUsername(int idUsername) {
+        this.idUsername = idUsername;
+    }
+
+    
     public void initValues() {
         String sql = "SELECT * FROM usuarios";
         connection.executeQuery(sql);
@@ -87,9 +103,19 @@ public class ModelIniciarSeccion {
         boolean desh = false;
        // password = encodeModel.md5(password);
         
-        String query = "SELECT * FROM usuarios WHERE usuario = '"+username+"' AND password = '"+password+"';";
+      /*  String query = "SELECT * FROM usuarios WHERE usuario = '"+username+"' AND password = '"+password+"';";
         connection.executeQuery(query);
-        connection.moveNext();
+        connection.moveNext();*/
+        
+              String cool = "SELECT *  FROM usuarios where usuario=? and password=?;";
+  connection.prepareStatement(cool);
+        connection.setPreparedStatement(1, getUsername());
+        connection.setPreparedStatement(2, getPassword());
+        connection.executePreparedStatement();
+        
+           connection.moveNext();
+        setUsername(connection.getString("usuario"));
+        setPassword(connection.getString("password"));
         
         status = connection.getString("estado");
                 if (username.equals(connection.getString("usuario")) && password.equals(connection.getString("password")) && status.equals("1")) {
@@ -97,9 +123,13 @@ public class ModelIniciarSeccion {
    //     if (username.equals(connection.getString("usuario")) && password.equals(connection.getString("password")) && status.equals("1")) {   
             desh = true;
             level = connection.getString("tipo");
-        }
+        }else{
+                        JOptionPane.showMessageDialog(null, "No esta registrado");
+
+                }
         
         return desh;
     }
 
+  
 }

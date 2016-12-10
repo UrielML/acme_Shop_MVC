@@ -40,8 +40,16 @@ public class ControllerIniciarSeccion implements ActionListener{
  
       @Override
     public void actionPerformed(ActionEvent g) {
-      //  if (g.getSource() == viewIniciarSeccion.jBlogin) || g.getSource() == viewIniciarSeccion.jPassword) {
+    
+         //  if (g.getSource() == viewIniciarSeccion.jBlogin) || g.getSource() == viewIniciarSeccion.jPassword) {
                 if (g.getSource() == viewIniciarSeccion.jBlogin || g.getSource() == viewIniciarSeccion.jPassword) {
+                    essaie();
+                }
+                }
+public void essaie(){
+                    if(viewIniciarSeccion.jBlogin.getText().compareTo("Login")==0){
+
+   viewIniciarSeccion.jBlogin.setText("Logout");
 
             modelIniciarSeccion.username = viewIniciarSeccion.jTusuario.getText();
             modelIniciarSeccion.password = viewIniciarSeccion.jPassword.getText();
@@ -55,7 +63,7 @@ public class ControllerIniciarSeccion implements ActionListener{
 
                   viewMain.jMreportes.setEnabled(true);
                     viewMain.jMarchivos.setEnabled(true);
-                         viewMain.jMoperaciones.setEnabled(true);
+                        viewMain.jMoperaciones.setEnabled(true);
                         viewMain.jmusuario.setEnabled(true);
                         viewMain.jMcatalogos.setEnabled(true);
                 } 
@@ -69,22 +77,37 @@ public class ControllerIniciarSeccion implements ActionListener{
                  JOptionPane.showMessageDialog(null, "no esta registrado en la base de datos");
             }
         }
-        else if (g.getSource() == viewIniciarSeccion.jTusuario) {
-            viewIniciarSeccion.jPassword.setCursor(null);
+      //  else if (g.getSource() == viewIniciarSeccion.jTusuario) {
+        //    viewIniciarSeccion.jPassword.setCursor(null);
+          
+    else{
+   
+      viewMain.jMreportes.setEnabled(false);
+                    viewMain.jMarchivos.setEnabled(true);
+                        viewMain.jMoperaciones.setEnabled(false);
+                        viewMain.jmusuario.setEnabled(false);
+                        viewMain.jMcatalogos.setEnabled(false);
+                         viewIniciarSeccion.jPassword.setText("");
+                         viewIniciarSeccion.jTusuario.setText("");
+                           viewIniciarSeccion.jBlogin.setText("Login");
+                    }
+
         }
-    }
+
+                    
+    
     
     private void initView() {
         viewIniciarSeccion.setVisible(true);
         modelIniciarSeccion.initValues();
      
     }
-    public void habilitar(){
+  /*  public void habilitar(){
     viewMain.jmusuario.setEnabled(true);
     }
      public void deshabilitar(){
     viewMain.jMprovedores.setEnabled(false);
-    }
+    }*/
 }
 
    
